@@ -2,8 +2,18 @@
 #include <vector>
 #include <regex>
 #include <stdio.h>
+#include <string>
+
+#include "player.h"
 
 using namespace std;
+
+//Database PlayerDatabase();
+map<int,Player> PlayerDatabase;
+map<int,Game> GameDatabase;
+
+void addPlayer(int PlayerID, string PlayerName);
+void PrintMap();
 
 int main(){
 	string command;
@@ -23,7 +33,9 @@ int main(){
 		
 		if(command == "AddGame"){
 			cin >> GameID;
-			getline(cin,GameName);
+			//getline(cin,GameName);
+			getline(cin,temp,'\"');
+			getline(cin,GameName,'\"');
 			cout << command << " " << GameID << " " << GameName << endl;
 		}
 		else if(command == "AddAchievement"){
@@ -44,9 +56,19 @@ int main(){
 		}
 		else if(command == "AddPlayer"){
 			cin >> PlayerID;
-			getline(cin,PlayerName);
+			//getline(cin,PlayerName);
+			getline(cin,temp,'\"');//gets and discards the first quotation mark
+			getline(cin,PlayerName,'\"');
 			cout << command << " " << PlayerID << " " << PlayerName << endl;
-			
+			/*
+			size_t found;
+			for(int i=0;i<2;i++){//get rid of quotation marks
+				found = PlayerName.find("\"");
+				if(found!=string::npos)
+					PlayerName.replace(found,1,"");
+			}
+			*/
+			addPlayer(PlayerID, PlayerName);
 		}
 		else if(command == "AddFriends"){
 			int Player1;
@@ -56,7 +78,9 @@ int main(){
 		}
 		else if(command == "Plays"){
 			cin >> PlayerID >> GameID;
-			getline(cin,IGN);
+			//getline(cin,IGN);
+			getline(cin,temp,'\"');//gets and discards the first quotation mark
+			getline(cin,IGN,'\"');
 			cout << command << " " << PlayerID << " " << GameID << " " << IGN << endl;
 		}
 		else if(command == "Achieve"){
@@ -89,12 +113,26 @@ int main(){
 		}
 		
 	}
+	PrintMap();
 
 }
 
-void Addplayer(){
+void addPlayer(int PlayerID, string PlayerName){
+	Player NewPlayer(PlayerName);
+	PlayerDatabase.insert(pair<int,Player>(PlayerID,NewPlayer));
 
+}
 
+void addGame(int GameID, string GameName){
+	//Player NewPlayer(PlayerName);
+	//PlayerDatabase.insert(pair<int,Player>(PlayerID,NewPlayer));
+
+}
+
+void PrintMap(){
+	for (map<int,Player>::iterator it=PlayerDatabase.begin(); it!=PlayerDatabase.end(); ++it){
+		cout << it->first << " => " << it->second.get_name() << '\n';
+	}
 }
 void AddGame(int GameID, string GameName){
 	
