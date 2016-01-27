@@ -2,6 +2,8 @@
 #include <map>
 #include <string>
 #include <iostream>
+#include <stdio.h>
+#include <iomanip>
 
 using namespace std;
 class Player;
@@ -27,7 +29,10 @@ class Player{
 	Player(string newplayer): playerName(newplayer), gamerScore(0) { }
 	string getName(){ return playerName; }
 	
-	void addGame(int playerID, int gameID, string IGN);
+	void addGame(string gameName, string IGN);
+	void addPlayer();
+	
+	void printGames();
 
 };
 

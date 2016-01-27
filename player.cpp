@@ -1,8 +1,16 @@
 #include "player.h"
 
-void Player::addGame(int playerID, int gameID, string IGN){
-	//Game newGame()
-	//games.pushback(newGame);
+void Player::addGame(string gameName, string IGN){
+	Game newGame(gameName, IGN);
+	games.push_back(newGame);
+}
+
+void Player::printGames(){
+	cout << "Games Played:\tIGN:\n";
+	for(int i=0;i<games.size();i++){
+		cout << games[i].getName() << "\t" << games[i].getIGN() << endl;
+	}
+	cout<< endl;
 }
 
 void Game::addAchievement(string name, int value, int ID){
