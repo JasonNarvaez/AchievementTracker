@@ -9,101 +9,107 @@
 using namespace std;
 
 //Database PlayerDatabase();
-map<int,Player> PlayerDatabase;
-map<int,Game> GameDatabase;
+map<int,Player> playerDatabase;
+map<int,Game> gameDatabase;
 
-void addPlayer(int PlayerID, string PlayerName);
-void PrintMap();
+void playsGame(int playerID, int gameID, string IGN);
+void addPlayer(int playerID, string playerName);
+void addGame(int gameID, string gameName);
+void printMap();
 
 int main(){
 	string command;
-	string PlayerName;
+	string playerName;
 	string IGN;
-	string GameName;
-	string AchievementName;
+	string gameName;
+	string achievementName;
 	string temp;
-	int GameID;
-	int AchievementID;
-	int PlayerID;
-	int AchievementValue;
+	int gameID;
+	int achievementID;
+	int playerID;
+	int achievementValue;
+	
 	cout << "Reading in input..." << endl;
 	while(cin.good()){
 		cin >> command;
 		cout << "command: " << command << endl;
 		
 		if(command == "AddGame"){
-			cin >> GameID;
+			cin >> gameID;
 			//getline(cin,GameName);
 			getline(cin,temp,'\"');
-			getline(cin,GameName,'\"');
-			cout << command << " " << GameID << " " << GameName << endl;
+			getline(cin,gameName,'\"');
+			cout << command << " " << gameID << " " << gameName << endl;
+			addGame(gameID, gameName);
 		}
 		else if(command == "AddAchievement"){
 			string temp2;
 			
-			cin >> GameID >> AchievementID;
-			cout << command << " " << GameID << " " << AchievementID << endl; 
+			cin >> gameID >> achievementID;
+			cout << command << " " << gameID << " " << achievementID << endl; 
 			
 			getline(cin,temp,'\"');//gets and discards the first quotation mark
-			getline(cin,AchievementName,'\"');//read entire string before the next quotation mark
-			cin >> AchievementValue;
+			getline(cin,achievementName,'\"');//read entire string before the next quotation mark
+			cin >> achievementValue;
 			
-			cout << "The achievement: " << AchievementName << endl;
-			cout << "The achievement Value: " << AchievementValue << endl;
-			cout << command << " " << GameID << " " << AchievementID << " " << AchievementName << " " << AchievementValue<<endl;
+			cout << "The achievement: " << achievementName << endl;
+			cout << "The achievement Value: " << achievementValue << endl;
+			cout << command << " " << gameID << " " << achievementID << " " << achievementName << " " << achievementValue<<endl;
+			
+			for (map<int,Game>::iterator it=gameDatabase.begin(); it!=gameDatabase.end(); ++it){
+				if(it->first == gameID){
+					it->second.addAchievement(achievementName, achievementValue, achievementID);
+				}
+				
+			}
 			cout << "--------------------------------------" << endl;
 			
 		}
 		else if(command == "AddPlayer"){
-			cin >> PlayerID;
+			cin >> playerID;
 			//getline(cin,PlayerName);
 			getline(cin,temp,'\"');//gets and discards the first quotation mark
-			getline(cin,PlayerName,'\"');
-			cout << command << " " << PlayerID << " " << PlayerName << endl;
-			/*
-			size_t found;
-			for(int i=0;i<2;i++){//get rid of quotation marks
-				found = PlayerName.find("\"");
-				if(found!=string::npos)
-					PlayerName.replace(found,1,"");
-			}
-			*/
-			addPlayer(PlayerID, PlayerName);
+			getline(cin,playerName,'\"');
+			cout << command << " " << playerID << " " << playerName << endl;
+			
+			addPlayer(playerID, playerName);
 		}
 		else if(command == "AddFriends"){
-			int Player1;
-			int Player2;
-			cin >> Player1 >> Player2;
-			cout << command << " " << Player1 << " " << Player2 << endl;
+			int player1;
+			int player2;
+			cin >> player1 >> player2;
+			cout << command << " " << player1 << " " << player2 << endl;
 		}
 		else if(command == "Plays"){
-			cin >> PlayerID >> GameID;
+			cin >> playerID >> gameID;
 			//getline(cin,IGN);
 			getline(cin,temp,'\"');//gets and discards the first quotation mark
 			getline(cin,IGN,'\"');
-			cout << command << " " << PlayerID << " " << GameID << " " << IGN << endl;
+			cout << command << " " << playerID << " " << gameID << " " << IGN << endl;
+			playsGame(playerID, gameID, IGN);
+			
 		}
 		else if(command == "Achieve"){
-			cin>>PlayerID>>GameID>>AchievementID;
-			cout << command << " " << PlayerID << " " << GameID << " " << AchievementID << endl;
+			cin>>playerID>>gameID>>achievementID;
+			cout << command << " " << playerID << " " << gameID << " " << achievementID << endl;
 		}
 		else if(command == "FriendsWhoPlay"){
-			cin >> PlayerID >> GameID;
-			cout << command <<" "<< PlayerID <<" "<< GameID << endl;
+			cin >> playerID >> gameID;
+			cout << command <<" "<< playerID <<" "<< gameID << endl;
 		}
 		else if(command == "ComparePlayers"){
-			int Player1;
-			int Player2;
-			cin >> Player1 >> Player2;
-			cout << command << " " << Player1 << " " << Player2 << endl;
+			int player1;
+			int player2;
+			cin >> player1 >> player2;
+			cout << command << " " << player1 << " " << player2 << endl;
 		}
 		else if(command == "SummarizePlayer"){
-			cin >> GameID;
-			cout << command << " " << GameID << endl;
+			cin >> gameID;
+			cout << command << " " << gameID << endl;
 		}
 		else if(command == "SummarizeAchievement"){
-			cin >> GameID >> AchievementID;
-			cout << command << " " << GameID << " " << AchievementID << endl;
+			cin >> gameID >> achievementID;
+			cout << command << " " << gameID << " " << achievementID << endl;
 		}
 		else if(command == "AchievementRanking"){
 			cout << command << endl;
@@ -113,27 +119,43 @@ int main(){
 		}
 		
 	}
-	PrintMap();
+	printMap();
 
 }
 
-void addPlayer(int PlayerID, string PlayerName){
-	Player NewPlayer(PlayerName);
-	PlayerDatabase.insert(pair<int,Player>(PlayerID,NewPlayer));
 
-}
 
-void addGame(int GameID, string GameName){
-	//Player NewPlayer(PlayerName);
-	//PlayerDatabase.insert(pair<int,Player>(PlayerID,NewPlayer));
-
-}
-
-void PrintMap(){
-	for (map<int,Player>::iterator it=PlayerDatabase.begin(); it!=PlayerDatabase.end(); ++it){
-		cout << it->first << " => " << it->second.get_name() << '\n';
-	}
-}
-void AddGame(int GameID, string GameName){
+void playsGame(int playerID, int gameID, string IGN){
 	
+	
+	for (map<int,Player>::iterator it=playerDatabase.begin(); it!=playerDatabase.end(); ++it){
+		if(it->first == playerID){
+			//it->second.addGame(playerID, gameID, IGN);
+		}
+	
+	}
+	
+}
+
+void addPlayer(int playerID, string playerName){
+	Player newPlayer(playerName);
+	playerDatabase.insert(pair<int,Player>(playerID,newPlayer));
+
+}
+
+void addGame(int gameID, string gameName){
+	Game newGame(gameName);
+	gameDatabase.insert(pair<int,Game>(gameID,newGame));
+
+}
+
+void printMap(){
+	for (map<int,Player>::iterator it=playerDatabase.begin(); it!=playerDatabase.end(); ++it){
+		cout << it->first << " => " << it->second.getName() << '\n';
+	}
+	cout << endl;
+	for (map<int,Game>::iterator it=gameDatabase.begin(); it!=gameDatabase.end(); ++it){
+		cout << it->first << " => " << it->second.getName() << '\n';
+		it->second.printAchievements();
+	}
 }

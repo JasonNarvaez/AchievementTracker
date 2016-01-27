@@ -1,5 +1,8 @@
 #include <vector>
 #include <map>
+#include <string>
+#include <iostream>
+
 using namespace std;
 class Player;
 class Game;
@@ -14,30 +17,45 @@ struct Database{//maybe use a set?
 };
 */
 class Player{
-	string PlayerName;
-	vector<Player> Friends;
-	vector<Game> Games;
-	vector<Achievement> PlayerAchievements;
-	int GamerScore;
+	string playerName;
+	vector<Player> friends;
+	vector<Game> games;
+	vector<Achievement> playerAchievements;
+	int gamerScore;
 	public:
 	Player();
-	Player(string NewPlayer): PlayerName(NewPlayer), GamerScore(0) { }
-	string get_name(){ return PlayerName; }
+	Player(string newplayer): playerName(newplayer), gamerScore(0) { }
+	string getName(){ return playerName; }
+	
+	void addGame(int playerID, int gameID, string IGN);
 
 };
 
 class Game{
-	vector<Achievement> Achievements;
+	vector<Achievement> achievements;
 	string IGN;
-	string GameName;
+	string gameName;
 	public:
 	Game();
-	Game(string gamename,string ign): GameName(gamename), IGN(ign) { }
+	Game(string gamename,string ign): gameName(gamename), IGN(ign) { }
+	Game(string gamename): gameName(gamename) { }
+	
+	void setName(string name){ gameName = name; }
+	void addAchievement(string name, int value, int ID);
+	
+	string getName(){ return gameName; }
+	string getIGN() { return IGN; }
+	
+	void printAchievements();
 	
 };
 
 class Achievement{
-	string AchievementName;
-	int AchievementValue;
-	
+	string achievementName;
+	int achievementValue;
+	int achievementID;
+	public:
+	Achievement(string name, int value, int ID): achievementName(name), achievementValue(value), achievementID(ID) { }
+	Achievement();
+	string getAchievement() { return achievementName; }
 };
