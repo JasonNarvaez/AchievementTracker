@@ -12,7 +12,9 @@ using namespace std;
 map<int,Player> playerDatabase;
 map<int,Game> gameDatabase;
 
+
 void playsGame(int playerID, int gameID, string IGN);
+void playerAchieves(int playerID, int gameID, int achievementID);
 void addPlayer(int playerID, string playerName);
 void addGame(int gameID, string gameName);
 void addFriends(int playerID1, int playerID2);
@@ -101,6 +103,7 @@ int main(){
 		else if(command == "Achieve"){
 			cin>>playerID>>gameID>>achievementID;
 			cout << command << " " << playerID << " " << gameID << " " << achievementID << endl;
+			playerAchieves(playerID, gameID, achievementID);
 		}
 		else if(command == "FriendsWhoPlay"){
 			cin >> playerID >> gameID;
@@ -132,20 +135,38 @@ int main(){
 
 }
 
-
+void playerAchieves(int playerID, int gameID, int achievementID){
+	map<int,Game>::iterator it_G;
+	map<int,Player>::iterator it_P;
+	string achieveName;
+	int achieveValue;
+	it_G = gameDatabase.find(gameID);
+	if(it_G != gameDatabase.end()){//add achievement if game is found
+		achieveName = it_G->second.findAchievementName(achievementID);
+		achieveValue = it_G->second.findAchievementValue(achievementID);
+		cout << "achievement: " << achieveName << " value: " << achieveValue << endl;
+	}	
+	it_P = playerDatabase.find(playerID);
+	if(it_P != playerDatabase.end() && !achieveName.empty()){//make sure achievement is found (and game/player)
+		cout<< "hello world~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+		it_P->second.addAchievement(achieveName, achieveValue, achievementID);
+	}
+	
+	
+}
 
 void playsGame(int playerID, int gameID, string IGN){
-	map<int,Game>::iterator it;
+	map<int,Game>::iterator it_G;
 	map<int,Player>::iterator it_P;
 	string gameName;
-	it = gameDatabase.find(gameID);
+	it_G = gameDatabase.find(gameID);
 	
-	if(it != gameDatabase.end()){//add achievement if game is found
-		gameName = it->second.getName();
+	if(it_G != gameDatabase.end()){//add achievement if game is found
+		gameName = it_G->second.getName();
 		
 	}	
 	it_P = playerDatabase.find(playerID);
-	if(it != gameDatabase.end() && it_P != playerDatabase.end()){//make sure both game and player exist
+	if(it_G != gameDatabase.end() && it_P != playerDatabase.end()){//make sure both game and player exist
 		it_P->second.addGame(gameName, IGN);
 	}
 	
@@ -163,14 +184,18 @@ void addGame(int gameID, string gameName){
 	gameDatabase.insert(pair<int,Game>(gameID,newGame));
 
 }
-
+//should we check if they try to add themselves or the same person twice???
 void addFriends(int playerID1, int playerID2){
 	map<int,Player>::iterator it_P1;
 	map<int,Player>::iterator it_P2;
 	it_P1 = playerDatabase.find(playerID1);
 	it_P2 = playerDatabase.find(playerID2);
 	if(it_P1 != playerDatabase.end() && it_P2 != playerDatabase.end()){//make sure both players exist
+		Player* p1 = &it_P1->second;
+		Player* p2 = &it_P2->second;
 		
+		it_P1->second.makeFriend(p2);
+		it_P2->second.makeFriend(p1);
 	}
 	
 }
@@ -180,6 +205,9 @@ void printMap(){
 		cout << it->first << " => " << it->second.getName() << '\n';
 		
 		it->second.printGames();
+		it->second.printPlayerAchievements();
+		it->second.printFriends();
+		cout << "--------------------------------------" << endl;
 	}
 	cout << endl;
 	for (map<int,Game>::iterator it=gameDatabase.begin(); it!=gameDatabase.end(); ++it){

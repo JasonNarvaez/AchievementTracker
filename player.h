@@ -20,19 +20,23 @@ struct Database{//maybe use a set?
 */
 class Player{
 	string playerName;
-	vector<Player> friends;
+	vector<Player*> friends;
 	vector<Game> games;
 	vector<Achievement> playerAchievements;
 	int gamerScore;
 	public:
 	Player();
 	Player(string newplayer): playerName(newplayer), gamerScore(0) { }
-	string getName(){ return playerName; }
+	string getName() { return playerName; }
+	int getGamerScore() { return gamerScore; }
 	
 	void addGame(string gameName, string IGN);
-	void addPlayer();
+	void makeFriend(Player* p);
+	void addAchievement(string achieveName, int achieveValue, int achieveID);
 	
 	void printGames();
+	void printFriends();
+	void printPlayerAchievements();
 
 };
 
@@ -51,6 +55,8 @@ class Game{
 	string getName(){ return gameName; }
 	string getIGN() { return IGN; }
 	
+	string findAchievementName(int achievementID);
+	int findAchievementValue(int achievementID);
 	void printAchievements();
 	
 };
@@ -62,5 +68,8 @@ class Achievement{
 	public:
 	Achievement(string name, int value, int ID): achievementName(name), achievementValue(value), achievementID(ID) { }
 	Achievement();
-	string getAchievement() { return achievementName; }
+	string getAchieveName() { return achievementName; }
+	int getAchieveValue() { return achievementValue; }
+	int getAchieveID() { return achievementID; }
+	
 };
