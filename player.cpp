@@ -12,6 +12,7 @@ void Player::makeFriend(Player* p){
 void Player::addPlayerAchievement(string achieveName, int achieveValue, int achieveID, int gameID){
 	Achievement newAchievement(achieveName, achieveValue, achieveID);
 	playerAchievements.push_back(newAchievement);
+	
 	for(int i=0;i<games.size();i++){//store the game specific achievement into the Player's own Game class
 		if(games[i].getGameID() == gameID){
 			games[i].addAchievement(achieveName, achieveValue, achieveID);
