@@ -5,15 +5,13 @@ To compile the code, use the command:
 
 make
 
-To run the code, use:
-
-make run
-
-./main 
+To run the code, use one of the following:
 
 ./main < SAMPLE_FILE.txt
 
-To run this code with the sample input file, use:
+./main 
+
+To run this code with the sample input file (commands.txt), use:
 
 make r
 
