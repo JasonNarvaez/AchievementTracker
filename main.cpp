@@ -411,6 +411,7 @@ void summarizePlayer(int playerID){
 	string achievementFraction;//holds the fraction of achievements completed, as a string
 	string gamerScore;
 	vector<Game> playerGameList = it_P->second.getGamesList();
+	vector<Player*> friendsList = it_P->second.getFriendsList();
 	
 	cout << "Player: " << it_P->second.getPlayerName() << endl;
 	cout << "Total Gamerscore: " << it_P->second.getGamerScore() << " pts" << endl << endl;
@@ -432,14 +433,15 @@ void summarizePlayer(int playerID){
 			 << setw(20) << gamerScore
 			 << playerGameList[i].getIGN() << endl;
 	}
+	cout << endl;
+	cout << setw(3) << left << " ";
+	cout << it_P->second.getPlayerName() << "'s Friends" << endl;
+	cout << "------------------------------" << endl;
 	
-	//cout << it_P->first << " => " << it_P->second.getPlayerName() << '\n';
-		
-	//it_P->second.printGames();
-	//it_P->second.printPlayerAchievements();
-	//it_P->second.printFriends();
-	//cout << "--------------------------------------" << endl;
-	//}
+	for(int i=0;i<friendsList.size();i++){
+		cout << i+1 << ". " << friendsList[i]->getPlayerName() <<endl;
+	}
+	
 }
 
 void printMap(){
