@@ -42,10 +42,12 @@ Plays 10001 1003 "Splinez"
 Plays 10001 1004 "ApocalypticJumper666"
 Plays 10001 1005 "Splinez"
 Plays 10002 1001 "andruid"
+Plays 10002 1002 "andruid"
 Plays 10002 1005 "andruid"
 Plays 10003 1001 "amw"
 Plays 10003 1002 "messi"
 Plays 10003 1005 "no9"
+Plays 10004 1002 "anic"
 Plays 10004 1003 "thenic"
 Plays 10004 1004 "omgnic"
 Plays 10004 1005 "nic"
@@ -90,3 +92,11 @@ FriendsWhoPlay 10001 1002
 FriendsWhoPlay 10005 1005
 
 ComparePlayers 10001 10002 1001
+
+SummarizeGame 1001
+SummarizeGame 1002
+
+SummarizeAchievement 1001 901
+SummarizeAchievement 1002 802
+
+AchievementRanking

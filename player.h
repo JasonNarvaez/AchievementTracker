@@ -39,6 +39,7 @@ class Player{
 	vector<Player*> getFriendsList() { return friends; }
 	vector<Game> getGamesList() { return games; }
 	Game findPlayerGame(int gameID);
+	int getGameIndex(int gameID);
 	bool hasGame(int gameID);
 	
 	void printGames();
@@ -66,6 +67,8 @@ class Game{
 	string getIGN() { return IGN; }
 	int getGameID() { return gameID; }
 	
+	int tallyAchievementValue();
+	bool hasAchievement(int achievementID);
 	string findAchievementName(int achievementID);
 	int findAchievementValue(int achievementID);
 	void printAchievements();

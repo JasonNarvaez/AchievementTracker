@@ -26,9 +26,17 @@ Game Player::findPlayerGame(int gameID){//returns the player's own Game object
 			return games[i];
 		}
 	}
-	cout << "Game ID " << gameID << " not found for player!" << endl;
+	//cout << "Game ID " << gameID << " not found for player!" << endl;
 }
 
+int Player::getGameIndex(int gameID){//returns the index of the target game
+	for(int i=0;i<games.size();i++){
+		if(games[i].getGameID() == gameID){
+			return i;
+		}
+	}
+	return -1;
+}
 //check if the player has played the game before
 bool Player::hasGame(int gameID){
 	for(int i=0;i<games.size();i++){
@@ -72,6 +80,23 @@ void Game::addAchievement(string name, int value, int ID){
 	Achievement newAchievement(name,value,ID);
 	achievements.push_back(newAchievement);
 	
+}
+int Game::tallyAchievementValue(){
+	int totalValue = 0;
+	for(int i=0;i<achievements.size();i++){
+		totalValue += achievements[i].getAchieveValue();
+	}
+	return totalValue;
+}
+
+bool Game::hasAchievement(int achievementID){
+	for(int i=0;i<achievements.size();i++){
+		if(achievements[i].getAchieveID() == achievementID){ 
+			return true;
+		}
+			
+	}
+	return false;
 }
 string Game::findAchievementName(int achievementID){
 	//cout << "~~~~~~~~~~~~~~~" << endl;
