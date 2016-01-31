@@ -174,37 +174,35 @@ void comparePlayers(int playerID1, int playerID2, int gameID){
 	
 	fullAchievementList = it_G->second.getAchievementList();
 	cout << "Game: " << it_G->second.getGameName() << endl;
-	cout << "\t\t\t\t" << it_P1->second.getPlayerName() << "\t\t\t\t" << it_P2->second.getPlayerName() << endl;
-	
+	cout << setw(3) << left << " ";
+	cout << setw(30) << left << "Achievement" << setw(20) << it_P1->second.getPlayerName() << it_P2->second.getPlayerName() << endl;
+	cout << "-----------------------------------------------" << endl;
 	for(int i=0;i<fullAchievementList.size();i++){
 		achieveID = fullAchievementList[i].getAchieveID();
 		achieveValue = fullAchievementList[i].getAchieveValue();
 		achieveP1 = gameP1.findAchievementName(achieveID);
 		achieveP2 = gameP2.findAchievementName(achieveID);
-		cout << "Achievement: " << fullAchievementList[i].getAchieveName() << "\t";
+		cout << i + 1 <<". " << setw(30) << left << fullAchievementList[i].getAchieveName();
 		
 		if(!achieveP1.empty()){
-			cout << achieveValue;
-			cout << "\t\t\t\t";
+			cout << setw(20) << left << achieveValue;
 			gameGamerScore1 += achieveValue;
 		}
 		else {
-			cout << "--";
-			cout << "\t\t\t\t";
+			cout << setw(20) << left << "--";
 		}
 		if(!achieveP2.empty()){
-			cout << achieveValue;
-			cout << "\t\t\t\t";
+			cout << setw(20) << left << achieveValue;
 			gameGamerScore2 += achieveValue;
 		}
 		else {
-			cout << "--";
-			cout << "\t\t\t\t";
+			cout << setw(20) << left << "--";
 		}
 			
 		cout << endl;
 	}
-	cout << "\t\t\t\t" << gameGamerScore1 << "\t\t\t\t" << gameGamerScore2 << endl;
+	cout << setw(3) << left << " ";
+	cout << setw(30) << left<< "Total Gamerscore:" << setw(20) << gameGamerScore1 << gameGamerScore2 << endl;
 }
 
 void friendsWhoPlay(int playerID, int gameID){
@@ -307,19 +305,25 @@ void summarizeGame(int gameID){
 	it_G = gameDatabase.find(gameID);
 	int playerCounter = 0;
 	int achieveCounter = 0;
+	string gameName = it_G->second.getGameName();
+	string achieveFraction;//holds the fraction of users that have completed the achieve (for easier string manipulation)
 	vector<Achievement> achieveList = it_G->second.getAchievementList();
 	
-	cout << "Players who play: " << it_G->second.getGameName() << endl;
+	cout << "Players who play: " << gameName << endl;
 	for (map<int,Player>::iterator it=playerDatabase.begin(); it!=playerDatabase.end(); ++it){
 		if(it->second.hasGame(gameID)){
-			cout << it->second.getPlayerName() << ", ";
+			cout << playerCounter + 1 << ". " << it->second.getPlayerName() << endl;
+			//cout << it->second.getPlayerName() << ", ";
 			playerCounter++;
 		}
 		
 	}
 	cout << endl;
 	
-	cout << "Achievement Statistics: " << endl;
+	cout << gameName << " achievement Statistics: " << endl;
+	cout << setw(3) << left << " ";
+	cout << setw(30) << left << "Achievements" << "Total Completed" << endl;
+	cout << "-----------------------------------------------" << endl;
 	for(int i=0;i<achieveList.size();i++){
 		achieveCounter = 0;
 		for (map<int,Player>::iterator it=playerDatabase.begin(); it!=playerDatabase.end(); ++it){
@@ -333,7 +337,8 @@ void summarizeGame(int gameID){
 				}
 			}
 		}
-		cout << i+1 << ". " << achieveList[i].getAchieveName() << setw(20) << achieveCounter
+		//achieveFraction = to_string(achieveCounter) + "/" + playerCounter;
+		cout << i+1 << ". " << setw(30) << left << achieveList[i].getAchieveName() << achieveCounter
 			 << "/" << playerCounter << endl;
 	}
 }
@@ -353,9 +358,9 @@ void summarizeAchievement(int gameID, int achieveID){
 		
 	}
 	cout << "Game: " << it_G->second.getGameName() << endl;
-	cout << "Achievement Statistics: " << endl;
-	cout << "Achievement Name: " << it_G->second.findAchievementName(achieveID) << endl;
-	cout << "Players who obtained Achievement: " << endl;
+	cout << "Achievement Statistics: " << endl << endl;
+	//cout << "Achievement Name: " << it_G->second.findAchievementName(achieveID) << endl;
+	cout << "Players who obtained Achievement: " << it_G->second.findAchievementName(achieveID) << endl;
 	//achieveCounter = 0;
 	for (map<int,Player>::iterator it=playerDatabase.begin(); it!=playerDatabase.end(); ++it){
 		
@@ -370,6 +375,7 @@ void summarizeAchievement(int gameID, int achieveID){
 			}
 		}
 	}
+	cout << endl;
 	cout << "Completion percentage: " <<(1.0*achieveCounter/playerCounter)*100 <<"%";
 	cout << endl;
 	
@@ -378,18 +384,19 @@ void summarizeAchievement(int gameID, int achieveID){
 bool playerSortFunction(Player p1, Player p2){ return p1.getGamerScore() > p2.getGamerScore(); }
 void achievementRanking(){
 	map<int,Player>::iterator it_P;
-	//it_P = playerDatabase.find(playerID);
+	string gamerScore;//holds the string equivalent of the gamerscore (for easier output manipulation)
 	vector<Player> playerID;//holds playerIDs for sorting
 	for (map<int,Player>::iterator it=playerDatabase.begin(); it!=playerDatabase.end(); ++it){
 		playerID.push_back(it->second);
 	}
 	
 	sort(playerID.begin(),playerID.end(),playerSortFunction);
-	cout << "Players" << setw(20) << "Gamerscore" << endl;
+	cout << setw(3) << left << " ";
+	cout << setw(20) << left << "Players" << "Gamerscore" << endl;
 	cout << "-----------------------------------------------" << endl;
 	for(int i=0;i<playerID.size();i++){
-		cout << i+1 << ". " << playerID[i].getPlayerName() << setw(20) << playerID[i].getGamerScore() 
-			 << " pts" << endl;
+		gamerScore = to_string(playerID[i].getGamerScore()) + " pts";
+		cout << i+1 << ". " << setw(20) << playerID[i].getPlayerName() << gamerScore << endl;
 	}
 	
 }
