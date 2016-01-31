@@ -10,14 +10,6 @@ class Player;
 class Game;
 class Achievement;
 
-/*
-struct Database{//maybe use a set?
-	map<int,Player> PlayerDB;
-	vector<Player> PlayerNames;
-	vector<int> PlayerIDs;
-	Database();
-};
-*/
 class Player{
 	string playerName;
 	

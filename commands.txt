@@ -92,6 +92,7 @@ FriendsWhoPlay 10001 1002
 FriendsWhoPlay 10005 1005
 
 ComparePlayers 10001 10002 1001
+ComparePlayers 10001 10003 1001
 
 SummarizeGame 1001
 SummarizeGame 1002
