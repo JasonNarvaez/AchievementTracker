@@ -45,14 +45,14 @@ int main(){
 	while( cin.good() ){
 		
 		cin >> command;
-		//cout << "command: " << command << endl;
+		
 		
 		if( command == "AddGame" ){
 			cin >> gameID;
 			
 			getline(cin,temp,'\"');
 			getline(cin,gameName,'\"');
-			//cout << command << " " << gameID << " " << gameName << endl;
+			
 			addGame(gameID, gameName);
 		}
 		else if(command == "AddAchievement"){
@@ -60,31 +60,27 @@ int main(){
 			iteratorGame it_G;
 			
 			cin >> gameID >> achievementID;
-			//cout << command << " " << gameID << " " << achievementID << endl; 
+			
 			
 			getline(cin,temp,'\"');//gets and discards the first quotation mark
 			getline(cin,achievementName,'\"');//read entire string before the next quotation mark
 			
 			cin >> achievementValue;
 			
-			//cout << "The achievement: " << achievementName << endl;
-			//cout << "The achievement Value: " << achievementValue << endl;
-			//cout << command << " " << gameID << " " << achievementID << " " << achievementName << " " << achievementValue<<endl;
 			
 			it_G = gameDatabase.find(gameID);
 			if(it_G != gameDatabase.end()){//add achievement if game is found
 				it_G->second.addAchievement(achievementName, achievementValue, achievementID);
 			}
 			
-			//cout << "--------------------------------------" << endl;
+			
 			
 		}
 		else if(command == "AddPlayer"){
 			cin >> playerID;
-			//getline(cin,PlayerName);
+			
 			getline(cin,temp,'\"');//gets and discards the first quotation mark
 			getline(cin,playerName,'\"');
-			//cout << command << " " << playerID << " " << playerName << endl;
 			
 			addPlayer(playerID, playerName);
 		}
@@ -92,21 +88,21 @@ int main(){
 			int player1;
 			int player2;
 			cin >> player1 >> player2;
-			//cout << command << " " << player1 << " " << player2 << endl;
+			
 			addFriends(player1, player2);
 		}
 		else if(command == "Plays"){
 			cin >> playerID >> gameID;
-			//getline(cin,IGN);
+			
 			getline(cin,temp,'\"');//gets and discards the first quotation mark
 			getline(cin,IGN,'\"');
-			//cout << command << " " << playerID << " " << gameID << " " << IGN << endl;
+			
 			playsGame(playerID, gameID, IGN);
 			
 		}
 		else if(command == "Achieve"){
 			cin>>playerID>>gameID>>achievementID;
-			//cout << command << " " << playerID << " " << gameID << " " << achievementID << endl;
+			
 			playerAchieves(playerID, gameID, achievementID);
 		}
 		else if(command == "FriendsWhoPlay"){
@@ -114,7 +110,7 @@ int main(){
 			
 			cout << endl;
 			cout << "[Friends Who Play]" << endl;
-			//cout << command <<" "<< playerID <<" "<< gameID << endl;
+			
 			friendsWhoPlay(playerID, gameID);
 		}
 		else if(command == "ComparePlayers"){
@@ -124,14 +120,13 @@ int main(){
 			
 			cout << endl;
 			cout << "[Compare Players]" << endl;
-			//cout << command << " " << player1 << " " << player2 << " " << gameID << endl;
+			
 			comparePlayers(player1, player2, gameID);
 			cout << endl;
 		}
 		else if(command == "SummarizePlayer"){
 			cin >> gameID;
-			//cout << command << " " << gameID << endl;
-			//cout << "--------------------------------------" << endl;
+			
 			cout << endl;
 			cout << "[Summarize Player]" << endl;
 			
@@ -140,8 +135,7 @@ int main(){
 		}
 		else if(command == "SummarizeGame"){
 			cin >> gameID;
-			//cout << command << " " << gameID << endl;
-			//cout << "--------------------------------------" << endl;
+			
 			cout << endl;
 			cout << "[Summarize Game]" << endl;
 			
@@ -150,8 +144,7 @@ int main(){
 		}
 		else if(command == "SummarizeAchievement"){
 			cin >> gameID >> achievementID;
-			//cout << command << " " << gameID << " " << achievementID << endl;
-			//cout << "--------------------------------------" << endl;
+			
 			cout << endl;
 			cout << "[Summarize Achievement]" << endl;
 			
@@ -159,7 +152,7 @@ int main(){
 			cout << endl;
 		}
 		else if(command == "AchievementRanking"){
-			//cout << command << endl;
+			
 			cout << endl;
 			cout << "[Achievement Ranking]" << endl;
 			achievementRanking();
@@ -171,7 +164,7 @@ int main(){
 		}
 		
 	}
-	//printMap();
+	
 
 }
 
@@ -488,7 +481,7 @@ void summarizePlayer( int playerID ){
 	}
 }
 
-void printMap(){
+void printMap(){//debugging print function
 	for ( iteratorPlay it = playerDatabase.begin(); it != playerDatabase.end(); ++it ){
 		cout << it->first << " => " << it->second.getPlayerName() << '\n';
 		
